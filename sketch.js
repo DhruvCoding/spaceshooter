@@ -1,7 +1,8 @@
 var player, enemyGroup, bulletsGroup, ebulletsGroup;
-var enemyHits, score, gameState, play;
+var enemyHits, score, gameState, play, backImage;
 function preload(){
 playerImage = loadImage("Player.png");
+backImage=loadImage("sunset.jpg")
 }
 function setup(){
   createCanvas(windowWidth,windowHeight);
@@ -17,7 +18,7 @@ function setup(){
   textSize(30);
 }
 function draw(){
-  background(0);
+  background(backImage);
   switch(gameState){
     case 0: text("How to Play?", 100, 100);
     text("1. You shoot by pressing 'Space'", 100, 200);
@@ -25,8 +26,9 @@ function draw(){
     text("3. If the invaders get past you, you LOSE", 100,400);
     text("4. You win if you have 20 kills",100,500)
     text("Press Space to Continue", 800,550);
-    if(keyDown("space")){
+    if(touches.length > 0 || keyDown("space")){
       gameState = 1;
+      touches = []
     }
     break; 
     case 1:  player.y = mouseY  
@@ -37,13 +39,14 @@ function draw(){
     }
     
     createBullets1();
-    if(keyWentDown("space")){
+    if(touches.length >0 || keyWentDown("space")){
       var bullet = createSprite(player.x,player.y,10,5);
       bullet.shapeColor = "blue";
       bulletsGroup.add(bullet);
       bullet.x = player.x
       bullet.y = player.y
       bullet.velocityX = 20; 
+      touches = []
     }
     if(enemyHits===0){
       enemyGroup.setVelocityEach(0,0)
